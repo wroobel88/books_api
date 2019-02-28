@@ -1,10 +1,23 @@
+const errorMessages = {
+  exists: "This book already exists in the library.",
+  notExists: "Resource with the given ID does not exist.",
+  empty: "Library is empty.",
+  usedId: "There is a book with given ID already."
+};
+
 const addBook = books => async book => {
   try {
     if (
       books.filter(b => b.author === book.author && b.title === book.title)
         .length > 0
     ) {
-      return { error: "This book already exists in library." };
+      return { error: errorMessages.exists };
+    }
+    if (
+      books.filter(b => b.id === book.id)
+        .length > 0
+    ) {
+      return { error: errorMessages.usedId };
     }
     books.push(book);
     const result = books;
@@ -17,11 +30,11 @@ const addBook = books => async book => {
 const deleteBookById = books => async id => {
   try {
     if (books.length === 0) {
-      return { error: "Library is empty." };
+      return { error: errorMessages.empty };
     }
     if (books.length > 0) {
       if (books && !books.find(b => b.id === id)) {
-        return { error: "Resource with given ID does not exist." };
+        return { error: errorMessages.notExists };
       } else {
         const index = books.findIndex(b => b.id === id);
         books.splice(index, 1);
@@ -46,11 +59,11 @@ const getAllBooks = books => async () => {
 const getBookById = books => async id => {
   try {
     if (books.length === 0) {
-      return { error: "Library is empty." };
+      return { error: errorMessages.empty };
     }
     if (books.length > 0) {
       if (books && !books.find(b => b.id === id)) {
-        return { error: "Resource with given ID does not exist." };
+        return { error: errorMessages.notExists };
       } else {
         const result = books.find(b => b.id === id);
         return { result };
@@ -64,12 +77,12 @@ const getBookById = books => async id => {
 const updateBookById = books => async book => {
   try {
     if (books.length === 0) {
-      return { error: "Library is empty." };
+      return { error: errorMessages.empty };
     }
     if (books.length > 0) {
       const id = book.id;
       if (books && !books.find(b => b.id === id)) {
-        return { error: "Resource with given ID does not exist." };
+        return { error: errorMessages.notExists };
       } else {
         const index = books.findIndex(b => b.id === id);
         books[index] = book;

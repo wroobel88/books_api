@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { createGenerator } = require("./keygen");
 
-const minIdLength = 8;
+const minIdLength = 10;
 const idGenerator = createGenerator(minIdLength);
 
 /* JOI validation schemas */
